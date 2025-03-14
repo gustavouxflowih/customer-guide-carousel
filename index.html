@@ -7,65 +7,139 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: Arial, sans-serif; }
+
         .carousel-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             position: relative;
             overflow: hidden;
             margin: auto;
         }
+
         .carousel {
             display: flex;
             transition: transform 0.5s ease-in-out;
         }
+
         .carousel img {
             width: 100%;
             flex-shrink: 0;
         }
+
         .prev, .next {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.25);
             color: white;
             border-radius: 100%;
-            padding: 10px;
+            border: none;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
         }
-        .prev { left: 10px; }
-        .next { right: 10px; }
+
+        .prev { 
+            left: 15px;
+        }
+
+        .next {
+            right: 15px;
+        }
+
+        .indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgb(180, 180, 180);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .indicator.active {
+            width: 36px;
+            height: 12px;
+            border-radius: 20px;
+            background-color: #245DFF;
+        }
     </style>
 </head>
 <body>
     <div class="carousel-container">
-        <div class="carousel-container">
-            <div class="carousel" id="carousel">
-                <img src="https://i.imgur.com/TUdtrvW.png">
-                <img src="https://i.imgur.com/tjzhz4V.png">
-                <img src="https://i.imgur.com/rQHLrU6.png">
-                <img src="https://i.imgur.com/ZOmYPct.png">
-                <img src="https://i.imgur.com/YqAqnI1.png">
-                <img src="https://i.imgur.com/nexMF87.png">
-                <img src="https://i.imgur.com/OpZM0xT.png">
-                <img src="https://i.imgur.com/v4SWRPH.png">
-                <img src="https://i.imgur.com/TULHcp0.png">
-                <img src="https://i.imgur.com/0koSdNE.png">
-            </div>
-            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-            <button class="next" onclick="moveSlide(1)">&#10095;</button>
+        <div class="carousel" id="carousel">
+            <img src="/imgs/1.png" alt="1">
+            <img src="/imgs/2.png" alt="2">
+            <img src="/imgs/3.png" alt="3">
+            <img src="/imgs/4.png" alt="4">
+            <img src="/imgs/5.png" alt="5">
+            <img src="/imgs/6.png" alt="6">
+            <img src="/imgs/7.png" alt="7">
+            <img src="/imgs/8.png" alt="8">
+            <img src="/imgs/9.png" alt="9">
+            <img src="/imgs/10.png" alt="10">
+            <img src="/imgs/11.png" alt="11">
+            <img src="/imgs/12.png" alt="12">
+            <img src="/imgs/13.png" alt="13">
+            <img src="/imgs/14.png" alt="14">
+            <img src="/imgs/15.png" alt="15">
+            <img src="/imgs/16.png" alt="16">
+            <img src="/imgs/17.png" alt="17">
+            <img src="/imgs/18.png" alt="18">
         </div>
         <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
         <button class="next" onclick="moveSlide(1)">&#10095;</button>
+        
+        <div class="indicators" id="indicators"></div>
     </div>
-    
+
     <script>
         let index = 0;
+        const carousel = document.getElementById('carousel');
+        const totalSlides = document.querySelectorAll('.carousel img').length;
+        const indicatorsContainer = document.getElementById('indicators');
+
+        // Função para atualizar os indicadores
+        function updateIndicators() {
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, i) => {
+                indicator.classList.remove('active');
+                if (i === index) {
+                    indicator.classList.add('active');
+                }
+            });
+        }
+
+        // Função para mover o slide
         function moveSlide(step) {
-            const carousel = document.getElementById('carousel');
-            const totalSlides = document.querySelectorAll('.carousel img').length;
             index = (index + step + totalSlides) % totalSlides;
             carousel.style.transform = `translateX(-${index * 100}%)`;
+            updateIndicators();
         }
+
+        // Função para criar os indicadores dinamicamente
+        function createIndicators() {
+            for (let i = 0; i < totalSlides; i++) {
+                const indicator = document.createElement('div');
+                indicator.classList.add('indicator');
+                indicator.addEventListener('click', () => {
+                    index = i;
+                    carousel.style.transform = `translateX(-${index * 100}%)`;
+                    updateIndicators();
+                });
+                indicatorsContainer.appendChild(indicator);
+            }
+            updateIndicators(); // Atualiza o estado inicial
+        }
+
+        // Chama a função para criar os indicadores
+        createIndicators();
     </script>
 </body>
 </html>
